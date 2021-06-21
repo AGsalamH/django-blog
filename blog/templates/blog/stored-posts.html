@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'blog/stored-posts.css' %}">
+{% endblock css_files %}
+
+
+{% block title %} My Stored Posts {% endblock title %}
+
+
+
+{% block content %} 
+
+<section id="stored-posts">
+    {% if not has_posts %}
+        <p>You didnt save any post for later!</p>
+    {% else %}
+    <ul>
+        {% for post in stored_posts %}
+            <li><a href="{{ post.get_absolute_url }}"> {{ post.title }} </a></li>
+        {% endfor %}
+    </ul>
+    <a id="remove" class="btn btn-warning" href="{% url 'remove-stored-posts' %}"> Remove all stored posts </a>
+    {% endif %}   
+</section>
+
+{% endblock %}

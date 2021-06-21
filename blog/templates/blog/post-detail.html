@@ -1,0 +1,99 @@
+{% extends "base.html" %} 
+{% load static %} 
+
+{% block title %} 
+{{ post.title }}
+{% endblock %} 
+
+{% block css_files %} 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static "blog/post-detail.css" %}" /> 
+{% endblock %} 
+
+{% block content %}
+
+{% if form.errors %}
+  <div id="alert">
+    <h2>Saving the comment failed!</h2>
+    <p>Please check the comment form down below the post and fix your errors</p>
+    <a href="#comment-form"> Fix! </a>
+  </div>
+{% endif %}
+
+<section id="summary">
+  <h2>{{ post.title }}</h2>
+  <div>
+    {% for tag in post.tags.all %}
+      <span class="tag">{{ tag.name }}</span>
+    {% endfor %}
+  </div>
+  
+  <div id="read-later">
+  <form action="{% url 'read-later' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="post_slug" value="{{ post.slug }}">
+    <button>
+      {% if not is_saved %}
+        Read Later
+      {% else %}
+        Remove from saved posts
+      {% endif %}
+    </button>
+  </form>
+  </div>
+
+    <div>
+    <a href="{{ post.get_update_url }}">  <button type="submit" class="btn btn-warning"> Update </button>  </a>
+    <a href="{{ post.get_delete_url }}">  <button type="submit" class="btn btn-danger"> Delete </button>  </a>
+  </div>
+
+  <article>
+    {% if post.image %}
+      <img src="{{ post.get_image_url }}" alt="{{ post.title }}" />
+    {% endif %}
+    <address>By <a href="mailto:{{ post.author.email }}">{{ post.author }}</a></address>
+    <div>Last updated on <time>{{ post.updated_at|date:"d M Y" }}</time></div>
+  </article>
+</section>
+
+<main>
+  {{ post.content|linebreaks }}
+</main>
+
+<section id="comments">
+  <h2>Post Comments:</h2>
+  <ul>
+    {% for comment in comments %}
+      <li>
+        <h2>{{ comment.username }}</h2>
+        <p>{{ comment.text|linebreaks }}</p>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+
+{% comment %}  {% endcomment %}
+
+
+
+  <hr>
+  <section id="comment-form">
+      <h3>Add Comment:</h3>
+    <form action="" method="post">
+      {% csrf_token %}
+      {{ form }}
+      {% comment %} <input type="hidden" name="post_id" value="{{ post.pk }}"> {% endcomment %}
+      <button type="submit" class="btn btn-primary">Save Comment</button>
+    </form>
+  </section>
+  {% comment %} <div class="comments"> 
+    {% for comment in comments %}
+      <h2>{{ comment.username }}</h2>
+      <small>Commented at: {{ comment.created_at }}</small>
+      <p>{{ comment.text|linebreaks }}</p>
+    {% endfor %}
+  </div> {% endcomment %}
+
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {% if update_mode %} Update | {{form.instance.title}} {% else %} Create New Post {% endif %} {% endblock %}
+
+{% block css_files %}
+  {% comment %} <link rel="stylesheet" href="{% static "blog/all-posts.css" %}" /> {% endcomment %}
+  {% comment %} <link rel="stylesheet" href="{% static "index.css" %}" /> {% endcomment %}
+  {% comment %} <link rel="stylesheet" href="{% static "blog/post.css" %}" /> {% endcomment %}
+  <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <style>
+    body {
+    background-color: #e7e7e7;
+  }
+  
+  #main-navigation {
+    background-color: #390281;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  form {
+    position: relative;
+    top: 100px
+  }
+
+  </style>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+          {{field.label_tag}}
+          <p style="margin:0"><small > {{field.help_text}} </small></p>
+          {{field}}
+          {{field.errors}}
+        {% endfor %}
+        {% if update_mode %}
+          <button class="btn btn-warning">Update</button>
+        {% else %}
+          <button class="btn btn-primary">Add</button>
+        {% endif %}
+    </form>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    {{author.full_name}}
+{% endblock page_title %}
+
+{% block content %}
+<h2>{{author.full_name}}</h2>
+<p>{{ author.email }}</p>
+{% endblock content %}

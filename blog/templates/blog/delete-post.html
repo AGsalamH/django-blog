@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+{% block css_files %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <style>
+        #main-navigation {
+            background-color: #390281;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        #delete-form-wrapper {
+            margin: 7rem
+        }
+    </style>
+
+{% endblock css_files %}
+
+
+{% block title %} Delete | {{ post.title }} {% endblock %}
+
+{% block content %}
+    <section id="delete-form-wrapper">
+        <form action="{{ post.get_delete_url }}" method="POST">
+            {% csrf_token %}
+            <h2>Deleting - {{ post.title }}</h2>
+            <p>Are you sure you want to delete this post ? </p>
+            
+            <button class="btn btn-danger"> Yes, Delete </button>
+            <a href="{{ post.get_absolute_url }}" class="btn btn-success"> Cancel </a>
+        </form>
+    </section>
+{% endblock %}

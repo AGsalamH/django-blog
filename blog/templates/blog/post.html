@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static "blog/post-detail.css" %}" />
+{% endblock css_files %}
+
+
+{% block page_title %}
+    {{ post.title }} post
+{% endblock page_title %}
+
+
+{% block content %}
+    <div class="container post-wrapper" style="over-flow:hidden">
+        <div style="float:left; padding-top: 60px; width:50%">
+            <h2>{{ post.title }}</h2> <hr>
+            <p>{{ post.excerpt }}</p>
+        </div>
+
+        <div style="float:right; width:50%"> 
+            <img src="{{ post.get_image_url }}" alt="{{ post.title }}" class="img-thumbnail " style="width:100%;max-height: 320px">
+            <p>Last updated: {{ post.updated_at }}</p>
+        </div>
+        <div style="clear: both"></div>
+        <hr>
+        <p > {{ post.content|linebreaks }} </p>
+    </div> 
+{% endblock content %}
